@@ -23,7 +23,13 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/lapangan', [LapanganController::class, 'index'])->name('lapangan');
-    Route::get('/booking', [BookingController::class, 'index'])->name('booking');
+    Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
     Route::get('/list', [ListController::class, 'index'])->name('list');
     Route::get('/history', [HistoryController::class, 'index'])->name('history');
+    Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+    Route::get('/booking', [BookingController::class, 'index'])->name('booking.index');
+    Route::get('/booking/checkout', [BookingController::class, 'checkout'])->name('booking.checkout');
+    Route::post('/booking/checkout', [BookingController::class, 'booking']);
+
+    Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat.index');
 });

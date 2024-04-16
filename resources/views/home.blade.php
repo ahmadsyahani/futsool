@@ -38,34 +38,34 @@
                         </ol>
                         
                         <div class="card-group mt-4">
-                          <div class="card">
-                              <div class="card-header text-center">
-                                  Biaya Sewa Lapangan - <span><strong>Indoor</strong></span>
-                              </div>
-                              <div class="card-body">
-                                  <ul>
-                                      <li>Indoor Reguler : Rp 300.000/Jam</li>
-                                      <li>Indoor Matras : Rp 250.000/Jam</li>
-                                      <li>Indoor Rumput : Rp 200.000/Jam</li>
-                                  </ul>
-                              </div>
-                          </div>
-                      
-                          <div class="card">
-                              <div class="card-header text-center">
-                                  Biaya Sewa Lapangan - <span><strong>Outdoor</strong></span>
-                              </div>
-                              <div class="card-body">
-                                  <ul>
-                                      <li>Outdoor Reguler : Rp 250.000/Jam</li>
-                                      <li>Outdoor Matras : Rp 200.000/Jam</li>
-                                      <li>Outdoor Rumput : Rp 150.000/Jam</li>
-                                  </ul>
-                              </div>
-                          </div>
-                      </div>
-                      
-                      
+                            <div class="card">
+                                <div class="card-header text-center">
+                                    Biaya Sewa Lapangan - <span><strong>Indoor</strong></span>
+                                </div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Indoor Reguler : Rp 300.000/Jam</li>
+                                        <li>Indoor Matras : Rp 250.000/Jam</li>
+                                        <li>Indoor Rumput : Rp 200.000/Jam</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        
+                            <div class="card">
+                                <div class="card-header text-center">
+                                    Biaya Sewa Lapangan - <span><strong>Outdoor</strong></span>
+                                </div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Outdoor Reguler : Rp 250.000/Jam</li>
+                                        <li>Outdoor Matras : Rp 200.000/Jam</li>
+                                        <li>Outdoor Rumput : Rp 150.000/Jam</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
                         <div class="card mt-4">
                             <div class="card-header">
                                 Biaya Sewa Tambahan
@@ -75,10 +75,45 @@
                                 <p><strong>Sewa Kostum:</strong> Rp 45.000/Jam</p>
                             </div>
                         </div>
+
+                        <!-- Modal Konfirmasi Keluar -->
+                        <div id="confirmModal" class="modal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Konfirmasi</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Apakah Anda yakin ingin keluar?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                        <button id="konfirmasiKeluarButton" type="button" class="btn btn-danger">Ya, Keluar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Modal Konfirmasi Keluar -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#keluarButton').click(function() {
+                $('#confirmModal').modal('show');
+            });
+
+            $('#konfirmasiKeluarButton').click(function() {
+                // Tambahkan kode di sini untuk menangani keluar
+                // Misalnya, mengarahkan pengguna ke halaman keluar
+            });
+        });
+    </script>
 @endsection

@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\Lapangan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('booking');
+        // berisi data booking user saat ini
+        $bs = Booking::where('user_id', Auth::user()->id)->get();
+        return view('booking', compact('bs'));
     }
 
     // menampilkan halaman checkout
     public function checkout(Request $request)
     {
-        // melakukan query sesuai jenis & lokasi lapangan yang dipilih
         $selected_lapangan = Lapangan::query()
             ->where('lokasi', $request->lokasi)
             ->where('jenis', $request->jenis)
@@ -24,12 +29,20 @@ class BookingController extends Controller
 
         // total durasi dalam satuan menit (date_end - date_start)
         $total_durasi = Carbon::parse($request->date_end)->diffInMinutes($request->date_start);
+
+        // Menghitung total harga tanpa biaya tambahan
         $total_harga = ($selected_lapangan->price / 60) * $total_durasi;
 
-        return view('checkout', compact('selected_lapangan', 'date_start', 'date_end', 'total_harga'));
+        // Menghitung biaya sewa tambahan berdasarkan durasi
+        $sewa_sepatu = 50000 * ceil($total_durasi / 60); // Rp. 50.000 per jam
+        $sewa_kostum = 45000 * ceil($total_durasi / 60); // Rp. 45.000 per jam
+
+        // Menambahkan biaya sewa tambahan ke total harga
+        $total_harga += $sewa_sepatu + $sewa_kostum;
+
+        return view('checkout', compact('selected_lapangan', 'date_start', 'date_end', 'total_harga', 'sewa_sepatu', 'sewa_kostum'));
     }
 
-    // melakukan proses booking / checkout
     public function booking(Request $request)
     {
         $selected_lapangan = Lapangan::query()
@@ -37,22 +50,18 @@ class BookingController extends Controller
             ->where('jenis', $request->jenis)
             ->first();
 
-        // cek apakah ada jadwal booking yang bertubrukan dengan request booking
-        $is_exist = Booking::query()
-            ->where('lapangan_id', $selected_lapangan->id)
-            ->whereBetween('date_start', [$request->date_start, $request->date_end])
-            ->orWhereBetween('date_end', [$request->date_start, $request->date_end])
-            ->get();
-
-        // dd($is_exist);
-        if (count($is_exist) > 0) {
-            return back()->with('is_exist', $is_exist);
-        }
-
-
         // total durasi dalam satuan menit (date_end - date_start)
         $total_durasi = Carbon::parse($request->date_end)->diffInMinutes($request->date_start);
+
+        // Menghitung total harga tanpa biaya tambahan
         $total_harga = ($selected_lapangan->price / 60) * $total_durasi;
+
+        // Menghitung biaya sewa tambahan berdasarkan durasi
+        $sewa_sepatu = 50000 * ceil($total_durasi / 60); // Rp. 50.000 per jam
+        $sewa_kostum = 45000 * ceil($total_durasi / 60); // Rp. 45.000 per jam
+
+        // Menambahkan biaya sewa tambahan ke total harga
+        $total_harga += $sewa_sepatu + $sewa_kostum;
 
         Booking::create([
             'lapangan_id' => $selected_lapangan->id,
